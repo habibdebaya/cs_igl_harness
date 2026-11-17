@@ -15,6 +15,7 @@
       <span class="score"><b class="ct">CT <i id="sct">0</i></b> – <b class="t"><i id="st">0</i> T</b></span>
     </div>
     <div class="model" id="model">…</div>
+    <button id="skip" class="skip" title="Jump to the wrap-up slides (Esc to come back)">Wrap-up ›</button>
   </header>
 
   <main>
@@ -59,6 +60,57 @@
       </div>
     </aside>
   </main>
+
+  <div id="deck" class="deck">
+    <section class="slide" data-part="before">
+      <div class="kicker">+81 Builders · Agent Harness Build Night</div>
+      <h1>cs_igl_harness</h1>
+      <p class="lead">An LLM as the in-game leader of the Counter-Terrorists in a Counter-Strike round.</p>
+      <div class="teams"><span class="ct">● ● ● ● ●</span><span class="vs">vs</span><span class="t">● ● ● ● ●</span></div>
+    </section>
+
+    <section class="slide" data-part="before">
+      <h2>The idea</h2>
+      <p class="big"><b>Let's teach an LLM to be the in-game leader in a Counter-Strike round.</b></p>
+      <p class="big">The in-game leader calls where all five players go.</p>
+      <p class="big">They never see the enemy. They call the round from <b class="hl">comms</b> and <b class="hl">memory</b>.</p>
+      <p class="big">So Kimi gets exactly that: what the Counter-Terrorists see and hear, plus a notebook of past rounds.</p>
+    </section>
+
+    <section class="slide" data-part="before">
+      <h2>How it works</h2>
+      <div class="flow">
+        <div class="box">Game<small>the real round</small></div>
+        <div class="arr">→</div>
+        <div class="box">What the Counter-Terrorists see &amp; hear<small>footsteps · flashes · deaths</small></div>
+        <div class="arr">→</div>
+        <div class="box kimi">Kimi<small>reads the round</small></div>
+        <div class="arr">→</div>
+        <div class="box">Orders<small>any player, any spot</small></div>
+        <div class="arr">→</div>
+        <div class="box">Players move</div>
+        <div class="arr up">↑</div>
+        <div class="box note">📓 Notebook<small>how the Terrorists played before</small></div>
+      </div>
+      <p class="sub">The game pauses after every call so we can read what Kimi decided.</p>
+    </section>
+
+    <section class="slide" data-part="after">
+      <h2>What it shows</h2>
+      <p class="big">On its own, Kimi can only <i>talk</i> about Counter-Strike.</p>
+      <p class="big">The harness let it actually <b class="hl">lead the team</b>: hear the round, make the call, move five players.</p>
+      <p class="sub">The same LLM. We built the harness around it.</p>
+    </section>
+
+    <section class="slide" data-part="after">
+      <h2>Next</h2>
+      <p class="big">Kimi leading the Terrorists too: AI against AI.</p>
+      <p class="repo">github.com/habibdebaya/cs_igl_harness</p>
+      <p class="thanks">Thanks!</p>
+    </section>
+
+    <div class="deck-foot"><span id="deckpage"></span><span>→ / Space</span></div>
+  </div>
 
   <script type="module" src="main.js"></script>
 </body>

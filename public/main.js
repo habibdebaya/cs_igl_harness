@@ -236,6 +236,7 @@ function onRoundEnd() {
     banner(`FINAL · CT ${game.score.CT} – ${game.score.T} T`, game.score.CT > game.score.T ? 'CT' : 'T');
     $('start').textContent = '↻ Run again';
     $('start').classList.remove('hidden');
+    waitForGo('▶ Wrap-up slides   (Space)').then(() => showDeck('after'));
   };
   const last = game.round >= LIVE.length;
   if (STEP) waitForGo(last ? '▶ Final score   (Space)' : '▶ Next round   (Space)').then(last ? showFinal : nextRound);
@@ -243,6 +244,7 @@ function onRoundEnd() {
 }
 
 function startMatch() {
+  if (goResolve) { $('go').classList.add('hidden'); goResolve = null; }
   $('start').classList.add('hidden');
   game = { round: 0, score: { CT: 0, T: 0 }, notebook: randomHistory(mulberry32(SEED), HISTORY) };
   renderNotebook();
@@ -282,13 +284,44 @@ renderNotebook();
 $('start').onclick = startMatch;
 $('go').onclick = () => goResolve?.();
 for (const b of [$('start'), $('go')]) b.addEventListener('mousedown', (e) => e.preventDefault());   // no focus -> no double trigger with Space
+// ------------------------------------------------------------------ slides (same page: before -> game -> after)
+const deck = { el: $('deck'), slides: [...document.querySelectorAll('.slide')], list: [], i: 0, part: null };
+const deckOpen = () => !deck.el.classList.contains('hidden');
+function renderDeck() {
+  deck.slides.forEach((sl) => sl.classList.remove('on'));
+  const cur = deck.list[deck.i];
+  cur.classList.add('on');
+  $('deckpage').textContent = `${deck.slides.indexOf(cur) + 1} / ${deck.slides.length}`;
+}
+function showDeck(part) {
+  deck.part = part;
+  deck.list = deck.slides.filter((sl) => sl.dataset.part === part);
+  deck.i = 0;
+  deck.el.classList.remove('hidden');
+  renderDeck();
+}
+function deckNext() {
+  if (deck.i < deck.list.length - 1) { deck.i++; renderDeck(); }
+  else if (deck.part === 'before') deck.el.classList.add('hidden');   // last intro slide -> the game
+}
+function deckPrev() { if (deck.i > 0) { deck.i--; renderDeck(); } }
+deck.el.addEventListener('click', deckNext);
+$('skip').onclick = () => showDeck('after');
+$('skip').addEventListener('mousedown', (e) => e.preventDefault());
+
+const NEXT = ['Space', 'Enter', 'ArrowRight', 'PageDown'];
+const PREV = ['ArrowLeft', 'PageUp'];
 document.addEventListener('keydown', (e) => {
-  if (!['Space', 'Enter', 'ArrowRight'].includes(e.code)) return;
+  if (e.code === 'Escape' && deckOpen()) { deck.el.classList.add('hidden'); return; }   // back to the game
+  if (![...NEXT, ...PREV].includes(e.code)) return;
   e.preventDefault();
   if (e.repeat) return;
+  if (deckOpen()) { NEXT.includes(e.code) ? deckNext() : deckPrev(); return; }
+  if (!NEXT.includes(e.code)) return;
   if (goResolve) goResolve();
   else if (!$('start').classList.contains('hidden')) $('start').click();
 });
+if (params.has('noslides')) deck.el.classList.add('hidden'); else showDeck('before');
 fetch('/api/config').then((r) => r.json()).then((c) => {
   $('model').textContent = FAKE ? 'Fake IGL (offline, no AI)' : `${c.model} · effort ${c.effort} · via ai&`;
 }).catch(() => { $('model').textContent = FAKE ? 'Fake IGL (offline)' : 'server not reachable'; });
