@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AI Shotcaller</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <div class="brand">AI SHOTCALLER <span>an AI IGL calls the CT side, live</span></div>
+    <div class="hud">
+      <span id="round">Round –</span>
+      <span id="clock" class="clock">0:25</span>
+      <span class="score"><b class="ct">CT <i id="sct">0</i></b> – <b class="t"><i id="st">0</i> T</b></span>
+    </div>
+    <div class="model" id="model">…</div>
+  </header>
+
+  <main>
+    <section class="left">
+      <div class="mapwrap">
+        <svg id="map" viewBox="0 0 1000 1000" aria-label="minimap"></svg>
+        <div id="banner" class="banner hidden"></div>
+        <button id="start" class="start">▶ Start match</button>
+      </div>
+      <div class="secret" id="secret">🔒 T plan (hidden from Kimi): –</div>
+    </section>
+
+    <aside>
+      <div class="card kimi">
+        <div class="kimi-head">
+          <span class="dot" id="kdot"></span>
+          <b>KIMI</b><span class="role">IGL</span>
+          <span id="kstatus" class="kstatus">waiting</span>
+        </div>
+        <div id="kreason" class="kreason"></div>
+        <div id="kthink" class="kthink">Press start. Kimi gets 5 rounds of history, then calls 3 live rounds.</div>
+        <div id="kcallout" class="kcallout"></div>
+        <ul id="korders" class="korders"></ul>
+        <ul id="krejected" class="krejected"></ul>
+        <button id="go" class="go hidden">▶ Execute orders</button>
+      </div>
+
+      <div class="row">
+        <div class="card">
+          <h3>What Kimi hears <small>fog of war</small></h3>
+          <ul id="comms" class="feed"></ul>
+        </div>
+        <div class="card">
+          <h3>Kimi's calls this round</h3>
+          <ul id="calls" class="feed"></ul>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>📓 Notebook <small>Kimi's memory of this enemy</small></h3>
+        <ul id="notebook" class="notebook"></ul>
+      </div>
+    </aside>
+  </main>
+
+  <script type="module" src="main.js"></script>
+</body>
+</html>

@@ -1,0 +1,5 @@
+.env
+key.txt
+node_modules/
+__pycache__/
+docs/
